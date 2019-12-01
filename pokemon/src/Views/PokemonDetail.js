@@ -1,16 +1,6 @@
 import React from 'react'
 import pokeService from '../Services/pokemon.service'
-import {Button} from 'react-bootstrap'
-function Evolution(props){
-    return (
-        <div style={{margin: "30px"}}>
-            <div>
-            <img src={props.evolution.image} width="100px" height="auto"/>
-            </div>
-            <p>{props.evolution.name}</p>
-        </div>
-    )
-}
+import { MDBRow, MDBCol, MDBCard, MDBCardBody, MDBView, MDBBtn } from "mdbreact";
 
 class PokemonDetail extends React.Component {
     constructor(props) {
@@ -55,7 +45,6 @@ class PokemonDetail extends React.Component {
     handleClick(){
         localStorage.setItem("from_detail","true")
         this.props.history.goBack()        
-        // this.context.router.history.goBack()
     }
     componentDidMount() {
         const id = this.props.id || this.props.location.pathname.split("/")[2]
@@ -66,35 +55,46 @@ class PokemonDetail extends React.Component {
             })
         })
     }
+
     render() {
         const pokemon = this.state.info
         return (
             <div>
-                <h2>Pokémon Detail Information</h2>
-                <Button onClick={this.handleClick}>Back to Main Menu</Button>
+                <h2>Detail Information</h2>
                 {this.state.is_loading && <p>Loading Information...</p>}
                 {!this.state.is_loading &&
-                    <div>
-                        <img src={pokemon.image} />
-                        <h2>{pokemon.name}</h2>
-                        <div>
-                            <h3>Detailed Information</h3>
-                            <p>Pokemon No: {pokemon.number}</p>
-                            <p>Types: {pokemon.types.join(", ")}</p>
-                            <p>Classification: {pokemon.classification}</p>
-                            <p>Max CP: {pokemon.maxCP}</p>
-                            <p>Max HP: {pokemon.maxHP}</p>
-                            <p>Weight: {pokemon.weight.minimum} (min) / {pokemon.weight.maximum} (max)</p>
-                            <p>Weaknesses: {pokemon.weaknesses.join(", ")}</p>
-                            <p>Resistant: {pokemon.resistant.join(", ")}</p>
-                            <p>Evolutions</p>
-                            <div>
-                                {(pokemon.evolutions != null) ? pokemon.evolutions.map(data => {
-                                    return <Evolution evolution={data}/>
-                                }):  <p>-</p>}
-                            </div>
-                        </div>
-                    </div>
+                    <MDBCard className="my-5 px-5 pb-5">
+                    <MDBCardBody>
+                      <MDBRow>
+                        <MDBCol lg="5" xl="4">
+                          <MDBView hover className="rounded z-depth-1-half mb-lg-0 mb-4">
+                            <img
+                              className="img-fluid"
+                              src={pokemon.image}
+                              alt=""
+                            />
+              
+                          </MDBView>
+                        </MDBCol>
+                        <MDBCol lg="7" xl="8">
+                          <h3 className="font-weight-bold mb-3 p-0">
+                            <strong>{pokemon.name}</strong>
+                          </h3>
+                          <p className="dark-grey-text">Pokemon Id: {pokemon.number}</p>
+                          <p className="dark-grey-text">Types: {pokemon.types.join(", ")}</p>
+                          <p className="dark-grey-text">Classification: {pokemon.classification}</p>
+                          <p className="dark-grey-text">Max CP: {pokemon.maxCP}</p>
+                          <p className="dark-grey-text">Max HP: {pokemon.maxHP}</p>
+                          <p className="dark-grey-text">Weight: {pokemon.weight.minimum} (min) / {pokemon.weight.maximum} (max)</p>
+                          <p className="dark-grey-text">Weaknesses: {pokemon.weaknesses.join(", ")}</p>
+                          <p className="dark-grey-text">Resistant: {pokemon.resistant.join(", ")}</p>
+                          <MDBBtn onClick={this.handleClick} color="primary" size="md">
+                            Back To Pokemon List
+                          </MDBBtn>
+                        </MDBCol>
+                      </MDBRow>
+                    </MDBCardBody>
+                  </MDBCard>
                 }
                 
             </div>

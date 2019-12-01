@@ -1,8 +1,8 @@
 import React from 'react'
-import PokemonList from './PokemonList'
 import pokeService from '../Services/pokemon.service'
-import InfiniteScroll from 'react-infinite-scroller';
-import { Table } from 'react-bootstrap'
+import InfiniteScroll from "react-infinite-scroll-component";
+import PokemonList from './PokemonList';
+import { MDBTable, MDBTableBody, MDBTableHead } from 'mdbreact';
 
 class HalamanList extends React.Component {
     constructor(props) {
@@ -37,9 +37,7 @@ class HalamanList extends React.Component {
                             is_loading: false
                         }
                     })
-                    // console.log(this.state)
                 })
-
         }
 
     }
@@ -63,7 +61,6 @@ class HalamanList extends React.Component {
     render() {
         return (
             <div>
-                <h2>Pokédex Master Data</h2>
                 {!this.state.is_loading &&
                     <InfiniteScroll
                         dataLength={this.state.listPokemon.length}
@@ -71,9 +68,8 @@ class HalamanList extends React.Component {
                         hasMore={true}
                         loader={<div className="loader"></div>}
                     >
-                        <Table bordered className="table-centered">
-
-                            <thead>
+                        <MDBTable hover>
+                            <MDBTableHead>
                                 <tr>
                                     <th>Number</th>
                                     <th>Images</th>
@@ -82,18 +78,19 @@ class HalamanList extends React.Component {
                                     <th>Max HP</th>
                                     <th>Max CP</th>
                                     <th>Resistant</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                                    <th>Action</th>
+                                </tr>               
+                            </MDBTableHead>
+                            <MDBTableBody>
                                 {this.state.listPokemon.map((data, i) => {
-                                    return <PokemonList info={data} key={i} />
-                                })}
-                            </tbody>
-                        </Table>
+                                        return <PokemonList info={data} key={i} />
+                                    })}
+                            </MDBTableBody>
+                        </MDBTable>
                     </InfiniteScroll>
 
                 }
-                {this.state.is_loading && <p>Loading...</p>}
+                {this.state.is_loading && <p>Please Wait...</p>}
             </div>
         )
     }
